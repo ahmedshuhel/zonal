@@ -1,6 +1,12 @@
+const async = require('async');
+
 module.exports = {
-  getSalutation: () => {
-    console.log(`Req Zone: ${Zone.current.name}`);
-    return `Hello, Req ${Zone.current.name}!`;
+  getSalutation: (callback) => {
+    async.waterfall([
+      (next) => {
+        console.log(`From async: ${Zone.current.name}`);
+        next();
+      }
+    ], () => callback(Zone.current.name));
   }
 };

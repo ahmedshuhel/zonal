@@ -1,7 +1,10 @@
 var { getSalutation } = require('./service');
 
 let sayHello = (req, res) => {
-  res.send(getSalutation());
+  console.log(`Req Zone: ${Zone.current.name}`);
+  getSalutation((salutation) => {
+    res.send(salutation);
+  })
 };
 
 
