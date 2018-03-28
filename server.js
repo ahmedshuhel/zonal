@@ -9,7 +9,8 @@ console.log(`Root Zone: ${Zone.current.name}`);
 
 app.use((req, res, next) => {
   let reqZone = Zone.current.fork({ name: uuid() });
-  console.log(`Still Root Zone: ${Zone.current.name}`);
+  reqZone.req_id = uuid();
+  console.log(`Still Root Zone: ${Zone.current.req_id}`);
   reqZone.run(() => {
     console.log(`Req Zone: ${Zone.current.name}`);
     next();
@@ -19,5 +20,3 @@ app.use((req, res, next) => {
 app.get('/', routes.sayHello);
 
 app.listen(3000);
-
-
