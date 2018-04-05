@@ -1,20 +1,22 @@
 require('zone.js');
 const uuid = require('uuid4')
+const mongoose = require('mongoose');
 const express = require('express');
 const routes = require('./routes');
-
+const { Cat } = require('./models');
 const app = express();
 
-console.log(`Root Zone: ${Zone.current.name}`);
+console.log(`Root zone:${Zone.current.name}`);
+mongoose.connect('mongodb://localhost/zonal', () => {
+  console.log('Connected');
+});
 
-app.use((req, res, next) => {
-  let reqZone = Zone.current.fork({ name: uuid() });
-  console.log(`Still Root Zone: ${Zone.current.name}`);
+app.use(function (req, res, next) {
+  var reqZone = Zone.current.fork({ name: uuid() });
   reqZone.run(() => {
-    const mongoose = require('mongoose');
-    mongoose.connect('mongodb://localhost/zonal');
-    console.log(`Req Zone: ${Zone.current.name}`);
-    next();
+      console.log(`Req Start:${Zone.current.name}`);
+      next();
+    //});
   });
 });
 
